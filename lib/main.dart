@@ -21,23 +21,29 @@ class AudioBlazeProApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.black,
           elevation: 0,
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
-      home: const YouTubeWebView(),
+      home: const YouTubeChannelScreen(),
     );
   }
 }
 
-class YouTubeWebView extends StatefulWidget {
-  const YouTubeWebView({super.key});
+class YouTubeChannelScreen extends StatefulWidget {
+  const YouTubeChannelScreen({super.key});
 
   @override
-  State<YouTubeWebView> createState() => _YouTubeWebViewState();
+  State<YouTubeChannelScreen> createState() => _YouTubeChannelScreenState();
 }
 
-class _YouTubeWebViewState extends State<YouTubeWebView> {
+class _YouTubeChannelScreenState extends State<YouTubeChannelScreen> {
   InAppWebViewController? webViewController;
-  double _progress = 0;
+  double progress = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -47,52 +53,33 @@ class _YouTubeWebViewState extends State<YouTubeWebView> {
           children: [
             InAppWebView(
               initialUrlRequest: URLRequest(
-                url: WebUri("https://www.youtube.com/"),
+                url: WebUri("https://www.youtube.com/@AudioBlazePro"),
               ),
               initialSettings: InAppWebViewSettings(
                 javaScriptEnabled: true,
+                mediaPlaybackRequiresUserGesture: false, // 🔥 Clave para que el audio siga con pantalla apagada
                 allowsInlineMediaPlayback: true,
-                mediaPlaybackRequiresUserGesture: false,
-                supportZoom: true,
-                thirdPartyCookiesEnabled: true,
-                clearSessionCache: false,
-                useOnDownloadStart: true,
-                allowsBackForwardNavigationGestures: true,
                 preferredContentMode: UserPreferredContentMode.MOBILE,
+                supportZoom: true,
+                clearSessionCache: false,
+                allowsBackForwardNavigationGestures: true,
+                useShouldOverrideUrlLoading: true,
+                thirdPartyCookiesEnabled: true,
                 userAgent: "Mozilla/5.0 (Linux; Android 10; Mobile; rv:68.0) Gecko/68.0 Firefox/68.0",
               ),
               onWebViewCreated: (controller) {
                 webViewController = controller;
               },
-              onProgressChanged: (controller, progress) {
+              onProgressChanged: (controller, newProgress) {
                 setState(() {
-                  _progress = progress / 100;
+                  progress = newProgress / 100;
                 });
               },
-              onLoadError: (controller, url, code, message) {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    backgroundColor: Colors.black,
-                    title: const Text('Error de carga', style: TextStyle(color: Colors.red)),
-                    content: const Text('No se pudo cargar YouTube. Verifique su conexión a Internet.', style: TextStyle(color: Colors.white)),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          controller.reload();
-                        },
-                        child: const Text('Reintentar', style: TextStyle(color: Colors.red)),
-                      ),
-                    ],
-                  ),
-                );
-              },
             ),
-            if (_progress < 1.0)
+            if (progress < 1.0)
               LinearProgressIndicator(
-                value: _progress,
-                color: Colors.red,
+                value: progress,
+                color: Colors.redAccent,
                 backgroundColor: Colors.black,
                 minHeight: 2,
               ),
