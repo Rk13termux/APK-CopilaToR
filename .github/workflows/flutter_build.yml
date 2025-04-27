@@ -3,11 +3,11 @@ name: Flutter Build APK
 on:
   push:
     branches:
-      - main  # Corre solo cuando haces push en la rama main
+      - main
 
 jobs:
   build:
-    name: Build Release APK
+    name: Build APK Release
     runs-on: ubuntu-latest
 
     steps:
@@ -17,16 +17,16 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'  # Ajusta aquí a tu versión exacta si cambia
+          flutter-version: '3.19.6'  # Asegúrate que coincida con tu versión local
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK (Release Mode)
+      - name: Build APK (Release Split ABI)
         run: flutter build apk --release --split-per-abi
 
       - name: Upload APKs
         uses: actions/upload-artifact@v3
         with:
-          name: APKs-Releases
+          name: app-release-apk
           path: build/app/outputs/flutter-apk/*.apk
