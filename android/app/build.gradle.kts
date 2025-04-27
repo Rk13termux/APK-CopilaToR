@@ -8,11 +8,11 @@ plugins {
 android {
     namespace = "com.example.apk_copilator"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
-        ndkVersion = "27.0.12077973"
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
