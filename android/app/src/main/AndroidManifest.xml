@@ -3,6 +3,9 @@
         android:label="apk_copilator"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        android:usesCleartextTraffic="true"
+        android:foregroundServiceType="mediaPlayback"
+        android:theme="@style/LaunchTheme">
         <activity
             android:name=".MainActivity"
             android:exported="true"
